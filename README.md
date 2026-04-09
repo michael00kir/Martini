@@ -1,9 +1,10 @@
 # **Martini** 🍸
 
-**Martini** is a professional Command Line Interface (CLI) orchestrator built in **Swift**. It acts as an intelligent assistant that researches, explains, and safely executes shell commands based on user intent.
+**Martini** is a professional Zsh Terminal & Command Line Interface (CLI) orchestrator built in **Swift**. It acts as an intelligent assistant that researches, explains, and safely executes shell commands based on user intent.
 
 ## **Features**
 
+* **Terminal navigation**: Navigate, change directories all with natural language.
 * **Intelligent Documentation Lookup**: Automatically retrieves and cleans manual pages for CLI tools to ensure correct syntax.
 * **Safe Command Execution**: Proposes commands with detailed breakdowns of flags and logic before running them.
 * **High-Risk Detection**: Includes a safety engine that flags dangerous operations like `sudo`, `rm`, or recursive permission changes.
@@ -20,6 +21,9 @@
 4.  **Confirm**: Waits for explicit user confirmation (`y/n`) before any execution takes place.
 
 ## **Built-In Tools**
+
+### **ChangeDirectoryTool**
+Navigate Terminal in natural language for the zsh.
 
 ### **ManualLookup**
 Retrieves clean documentation for any CLI tool (e.g., `brew`, `git`). It strips formatting artifacts from standard manual pages to provide highly readable text for the orchestration engine.
