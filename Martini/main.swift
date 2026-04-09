@@ -15,7 +15,8 @@ print("------------------------------------------------------------")
 
 // 2. Initialize session - NOW PASSING THE HISTORY
     var session = LanguageModelSession(
-        tools: [ManualLookupTool(), ExecuteCommandTool()],
+        tools: [ManualLookupTool(), ExecuteCommandTool(), ChangeDirectoryTool(),
+                FileDiscoveryTool()],
         instructions: """
         You are 'Martini', a professional CLI orchestrator.
         
@@ -56,7 +57,8 @@ while true {
         print("\n❌ Error: \(error.localizedDescription)")
     }
     session = LanguageModelSession(
-        tools: [ManualLookupTool(), ExecuteCommandTool()],
+        tools: [ManualLookupTool(), ExecuteCommandTool(), ChangeDirectoryTool(),
+                FileDiscoveryTool()],
         instructions: """
         You are 'Martini', a professional CLI orchestrator. 
         
@@ -73,6 +75,11 @@ while true {
         2. Identify the tool the user needs for new tasks.
         3. Use `ManualLookup` to read its manual.
         4. Use `ExecuteCommand` to propose the final command with a full definition of flags.
+        
+        NAVIGATION RULES:
+            1. Always use 'FileDiscovery' with 'list' before jumping into a directory you aren't sure of.
+            2. Use 'ChangeDirectory' to move your context; do not just run 'cd' inside 'ExecuteCommand' as it won't persist.
+            3. If the user asks "where am I?", use FileDiscovery (where).
         """
     )
     session.prewarm()
