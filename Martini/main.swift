@@ -8,11 +8,36 @@
 import Foundation
 import FoundationModels
 
+func checkModelStatus() -> (isReady: Bool, message: String) {
+    let model = SystemLanguageModel.default
+    
+    switch model.availability {
+    case .available:
+        return (true, "✅ Apple Intelligence is available and ready.")
+    case .unavailable(.deviceNotEligible):
+        return (false, "❌ Error: This device is not eligible for Apple Intelligence.")
+    case .unavailable(.appleIntelligenceNotEnabled):
+        return (false, "⚠️  Apple Intelligence is disabled. Please enable it in System Settings.")
+    case .unavailable(.modelNotReady):
+        return (false, "⏳ The model is currently downloading or preparing. Please wait.")
+    case .unavailable(_):
+        return (false, "❌ Apple Intelligence is unavailable for an unknown reason.")
+    }
+}
+
 let options = GenerationOptions(sampling: .greedy)
 
 print("🍸 Martini Started. Type 'exit' or 'quit' to end.")
 print("------------------------------------------------------------")
 
+// Verify Model Availability
+let status = checkModelStatus()
+print(status.message)
+
+if !status.isReady {
+    print("Martini requires Apple Intelligence to function. Exiting...")
+    exit(1)
+}
 // 2. Initialize session - NOW PASSING THE HISTORY
     var session = LanguageModelSession(
         tools: [ManualLookupTool(), ExecuteCommandTool(), ChangeDirectoryTool(),
