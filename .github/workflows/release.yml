@@ -1,7 +1,7 @@
 name: Update Homebrew Formula
 on:
   release:
-    types: [published]
+    types: [created]
 
 jobs:
   homebrew:
