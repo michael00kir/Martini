@@ -13,4 +13,8 @@ jobs:
           token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
           formula: martini
           tap: michael00kir/homebrew-martini
+          # Explicitly tell the action which version and URL to use
+          url: ${{ github.event.release.tarball_url }}
+          tag: ${{ github.event.release.tag_name }}
           force: true
+
