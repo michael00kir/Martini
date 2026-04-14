@@ -1,18 +1,1 @@
-- name: bump-homebrew-formula
-  uses: mislav/bump-homebrew-formula-action@v4.1
-  with:
-    # The name of the Homebrew formula defined in martini.rb
-    formula-name: martini
-    
-    # The relative path to the formula file in the target repository
-    formula-path: Formula/martini.rb
-    
-    # The repository where the formula should be updated (the tap)
-    homebrew-tap: michael00kir/homebrew-martini
-    
-    # The download URL for the source tarball, utilizing the version variable 
-    # as expected by your formula's URL definition
-    download-url: https://github.com/michael00kir/martini/archive/v${{ github.event.release.tag_name }}.tar.gz
-    
-    # Optional: ensure a PR is created in the homebrew-martini repo
-    create-pullrequest: true
+
