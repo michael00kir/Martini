@@ -1,2 +1,29 @@
-- name: Homebrew bump formula
-  uses: dawidd6/action-homebrew-bump-formula@v7
+            - name: bump-homebrew-formula
+  # You may pin to the exact commit or the version.
+  # uses: mislav/bump-homebrew-formula-action@ccf2332299a883f6af50a1d2d41e5df7904dd769
+  uses: mislav/bump-homebrew-formula-action@v4.1
+  with:
+    # The name of the Homebrew formula (defaults to lower-cased repository name)
+    formula-name: # optional
+    # The path to the Homebrew formula file (defaults to `Formula/<formula-name>.rb`)
+    formula-path: # optional
+    # The git tag name to bump the formula to (defaults to the currently pushed tag)
+    tag-name: # optional
+    # The package download URL for the Homebrew formula (defaults to the release tarball)
+    download-url: # optional
+    # The SHA256 checksum of the archive at download-url (defaults to calculating it)
+    download-sha256: # optional
+    # The repository where the formula should be updated
+    homebrew-tap: # optional, default is Homebrew/homebrew-core
+    # An existing fork of the homebrew-tap repository where the edit should be pushed to (defaults to creating or reusing a personal fork)
+    push-to: # optional
+    # The branch name in the homebrew-tap repository to update the formula in
+    base-branch: # optional
+    # Set to a boolean value to either force or prohibit making a pull request to homebrew-tap
+    create-pullrequest: # optional
+    # Set to a boolean value to either force or prohibit creating a separate branch on homebrew-tap
+    create-branch: # optional
+    # The git commit message template to use when updating the formula
+    commit-message: # optional, default is {{formulaName}} {{version}}
+
+Created by https://github.com/mislav/bump-homebrew-formula-action
