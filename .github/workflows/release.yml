@@ -8,12 +8,16 @@ jobs:
   homebrew:
     runs-on: macos-latest
     steps:
-      - name: Update Homebrew formula
-        uses: dawidd6/action-homebrew-bump-formula@v3
-        with:
-          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
-          formula: martini
-          tap: michael00kir/homebrew-martini
-          tag: ${{ github.event.release.tag_name }}
-          revision: ${{ github.sha }}
-          force: true
+      - name: Update Formula with Revision
+        run: |
+          # 1. Tap your repository
+          brew tap michael00kir/homebrew-martini
+          
+          # 2. Run the bump command manually to avoid the 'odie' bug
+          # We pass the tag (1.0.1) and the exact commit SHA
+          brew bump-formula-pr --no-audit --no-browse \
+            --tag=${{ github.event.release.tag_name }} \
+            --revision=${{ github.sha }} \
+            michael00kir/homebrew-martini/martini
+        env:
+          HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
