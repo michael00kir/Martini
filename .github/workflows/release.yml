@@ -1,0 +1,16 @@
+name: Update Homebrew Formula
+on:
+  release:
+    types: [created]
+
+jobs:
+  homebrew:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update Homebrew formula
+        uses: dawidd6/action-homebrew-bump-formula@v3
+        with:
+          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          formula: martini
+          tap: michael00kir/homebrew-martini
+          force: true
