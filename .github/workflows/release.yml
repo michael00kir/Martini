@@ -1,7 +1,7 @@
 name: Update Homebrew Formula
 on:
   release:
-    types: [created] # Changed from 'created' to ensure the download link is active
+    types: [published] # Crucial: wait until the release is fully live
 
 jobs:
   homebrew:
@@ -10,17 +10,10 @@ jobs:
       - name: Update Homebrew formula
         uses: dawidd6/action-homebrew-bump-formula@v3
         with:
-          # Required: Your PAT with repo permissions
           token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
-          
-          # The name of the formula in your tap (martini.rb)
           formula: martini
-          
-          # Your tap repository
           tap: michael00kir/homebrew-martini
-          
-          # REMOVED: Explicit url and tag/version. 
-          # The action extracts these automatically from the 'published' release event.
+          # These specific variables fix the "Invalid Usage" error
+          url: ${{ github.event.release.tarball_url }}
+          version: ${{ github.event.release.tag_name }}
           force: true
-
-
