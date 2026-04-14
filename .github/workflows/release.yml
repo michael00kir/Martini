@@ -1,19 +1,2 @@
-name: Update Homebrew Formula
-on:
-  release:
-    types: [published] # Crucial: wait until the release is fully live
-
-jobs:
-  homebrew:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Update Homebrew formula
-        uses: dawidd6/action-homebrew-bump-formula@v3
-        with:
-          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
-          formula: martini
-          tap: michael00kir/homebrew-martini
-          # These specific variables fix the "Invalid Usage" error
-          url: ${{ github.event.release.tarball_url }}
-          version: ${{ github.event.release.tag_name }}
-          force: true
+- name: Homebrew bump formula
+  uses: dawidd6/action-homebrew-bump-formula@v7
