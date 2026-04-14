@@ -1,39 +1,16 @@
 name: Update Homebrew Formula
-
 on:
   release:
     types: [created]
 
 jobs:
-  update-formula:
+  homebrew:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Homebrew Tap
-        uses: actions/checkout@v4
+      - name: Update Homebrew formula
+        uses: dawidd6/action-homebrew-bump-formula@v3
         with:
-          # Replace with your actual tap repository if different from the main repo
-          repository: michael00kir/homebrew-martini 
           token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
-
-      - name: Update Formula
-        env:
-          VERSION: ${{ github.event.release.tag_name }}
-        run: |
-          set -e
-          # Remove 'v' prefix if present for the version string
-          VERSION_NUMBER="${VERSION#v}"
-          
-          # Download the source tarball to calculate SHA256
-          curl -L --fail -o source.tar.gz "https://github.com/michael00kir/martini/archive/${VERSION}.tar.gz"
-          SHA256=$(sha256sum source.tar.gz | awk '{ print $1 }')
-          
-          # Update the version and sha256 in the Ruby formula
-          # Using sed to match the patterns found in your martini.rb file
-          sed -i "s/version \".*\" # The automation.*/version \"${VERSION_NUMBER}\" # The automation will update this line automatically/" Formula/martini.rb
-          sed -i "s/sha256 \".*\"/sha256 \"${SHA256}\"/" Formula/martini.rb
-          
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add Formula/martini.rb
-          git commit -m "Update Martini to ${VERSION}"
-          git push
+          formula: martini
+          tap: michael00kir/homebrew-martini
+          force: true
