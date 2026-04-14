@@ -15,4 +15,5 @@ jobs:
           formula: martini
           tap: michael00kir/homebrew-martini
           tag: ${{ github.event.release.tag_name }}
+          revision: ${{ github.sha }}
           force: true
