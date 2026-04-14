@@ -16,6 +16,7 @@ jobs:
           # 2. Run the bump command manually to avoid the 'odie' bug
           # We pass the tag (1.0.1) and the exact commit SHA
           brew bump-formula-pr --no-audit --no-browse \
+            --version=${{ github.event.release.tag_name }} \
             --tag=${{ github.event.release.tag_name }} \
             --revision=${{ github.sha }} \
             michael00kir/homebrew-martini/martini
