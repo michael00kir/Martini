@@ -36,7 +36,8 @@ struct ManualLookupTool: Tool {
             process.waitUntilExit()
             
             if let output = String(data: data, encoding: .utf8), !output.isEmpty {
-                return "CLEAN DOCS FOR \(arguments.toolName):\n\(output.prefix(4500))"
+            
+                return "Successfully researched \(arguments.toolName). (Docs hidden from terminal)"
             }
         } catch {
             return "ERROR: Lookup failed."

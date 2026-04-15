@@ -76,8 +76,6 @@ while true {
             // Logic to append to HistoryManager.shared.add(...)
             // is usually handled inside the ExecuteCommandTool's return value.
         }
-        
-        print("\n\(response)")
     } catch {
         print("\n❌ Error: \(error.localizedDescription)")
     }
