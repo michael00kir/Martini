@@ -4,7 +4,7 @@
 
 ## Demo
 
-[![Watch the video]](https://github.com/michael00kir/martini/demo-videos/output.mp4)
+[![Watch the video]](https://raw.githubusercontent.com/michael00kir/martini/demo-videos/output.mp4)
 
 ## **Features**
 
