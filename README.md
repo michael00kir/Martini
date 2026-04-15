@@ -4,7 +4,7 @@
 
 ## Demo
 
-[![Demo video]](https://raw.githubusercontent.com/michael00kir/Martini/demo-videos/output.mp4)
+![Martini CLI Demo](demo-videos/output.mp4)
 
 ## **Features**
 
