@@ -49,7 +49,6 @@ Handles the final interaction with the system. It uses `/bin/zsh` to execute con
 
 ## **Installation & Usage**
 
-To start a **Martini** session, run the executable and type your request at the prompt:
+To start a **Martini** session, download the newest relese, unzip it and use xcode product tab to archive it where you can download the build file and run it
 
-```bash
-./Martini
+working on homebrew formula integration (currently problems with the way it builds there)
