@@ -40,4 +40,4 @@ Currently, Martini is available as an Xcode project. To deploy your agent:
 *Note: Homebrew formula integration is currently in development to streamline the agent's deployment.*
 
 ## **License**
-Proprietary / Non-Commercial Private Use [cite: 2].
+Proprietary / Non-Commercial Private Use.
