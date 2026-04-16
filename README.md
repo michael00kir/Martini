@@ -55,3 +55,6 @@ Handles the final interaction with the system. It uses `/bin/zsh` to execute con
 To start a **Martini** session, download the newest relese, unzip it and use xcode product tab to archive it where you can download the build file and run it
 
 working on homebrew formula integration (currently problems with the way it builds there)
+
+## **License**
+Proprietary / Non-Commercial.
