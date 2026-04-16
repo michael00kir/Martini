@@ -1,60 +1,43 @@
-# **Martini** 🍸
+# Martini 🍸
 
-**Martini** is a professional Zsh Terminal & Command Line Interface (CLI) orchestrator built in **Swift**. It acts as an intelligent assistant that researches, explains, and safely executes shell commands based on user intent.
+**Martini** is not just a terminal wrapper—it is a professional-grade Zsh orchestrator and autonomous agent built in **Swift**. By leveraging Apple Intelligence, Martini moves beyond static aliases to research, reason, and act within your macOS environment to fulfill complex intents.
 
-## **Join Discord**
-https://discord.gg/V8ny6agk
+## **The Vision: Your Computer, Automated**
+Martini is the new way to have a dedicated agent on your computer. We are building toward a world where your intent translates directly into system-level action:
+* **Agentic Automation**: You no longer write scripts; you describe a goal. Martini will synthesize the logic, verify the requirements, and build the automation for you.
+* **Native Mac Integration**: Martini bridges the gap between the shell and macOS. You can command Martini to create a specific automation, and it will generate the native macOS automations or Shortcuts for you.
+* **The CLI App Store**: We are evolving into a platform for agent-ready CLI applications, allowing users to deploy specialized agentic behaviors for any professional workflow.
 
-## Demo
-![Martini CLI Demo](demo-videos/output.mp4)
+## **Agentic Features**
 
-## **Features**
+* **Autonomous Research**: When faced with an unknown tool or complex syntax, Martini proactively uses the **ManualLookup** tool to ingest official documentation and self-correct.
+* **Persistent Contextual Awareness**: Unlike standard shells, Martini maintains a memory of your intent and history, allowing it to execute multi-step plans across different sessions.
+* **Stateful Navigation**: The agent understands where it is and where it needs to go, using `FileDiscovery` and `ChangeDirectory` tools to explore your filesystem intelligently.
+* **Safety-First Reasoning**: Before any high-risk action (like `rm` or `sudo`), Martini’s safety engine evaluates the command, flags it, and presents a formal proposal for your approval.
 
-* **Terminal navigation**: Navigate, change directories all with natural language.
-* **Intelligent Documentation Lookup**: Automatically retrieves and cleans manual pages for CLI tools to ensure correct syntax.
-* **Safe Command Execution**: Proposes commands with detailed breakdowns of flags and logic before running them.
-* **High-Risk Detection**: Includes a safety engine that flags dangerous operations like `sudo`, `rm`, or recursive permission changes.
-* **Session History**: Maintains a context of the last five commands and user intents to allow for informed follow-up requests.
-* **Interactive UI**: Provides a color-coded terminal interface for reviewing and confirming actions.
+## **How the Agent Operates**
 
-## **How It Works**
+Martini follows a cognitive loop to ensure accuracy and sovereignty:
 
-**Martini** follows a structured workflow to ensure accuracy and safety:
+1.  **Deconstruct**: It analyzes your natural language intent to identify the necessary system tools.
+2.  **Synthesize**: It researches official "man" pages to ensure the proposed logic is perfect.
+3.  **Propose**: It presents a detailed breakdown of flags and side effects, acting as a transparent collaborator.
+4.  **Execute & Learn**: Upon confirmation, it executes the task via `/bin/zsh` and updates its internal history to inform future actions.
 
-1.  **Analyze**: Identifies the necessary CLI tools based on your request.
-2.  **Research**: Uses the **ManualLookup** tool to read the official "man" pages or help documentation.
-3.  **Propose**: Presents a formal proposal via the **ExecuteCommand** tool, including the goal, a detailed definition of the command, and its specific flags.
-4.  **Confirm**: Waits for explicit user confirmation (`y/n`) before any execution takes place.
+## **Technical Foundation**
 
-## **Built-In Tools**
+* **Intelligence**: Powered by **Apple Intelligence** (SystemLanguageModel).
+* **OS Requirements**: Optimized for **macOS 26.2+**.
+* **Language**: Built with **Swift 5.0** for native performance and safety.
 
-### **ChangeDirectoryTool**
-Navigate Terminal in natural language for the zsh.
+## **Installation & Deployment**
 
-### **ManualLookup**
-Retrieves clean documentation for any CLI tool (e.g., `brew`, `git`). It strips formatting artifacts from standard manual pages to provide highly readable text for the orchestration engine.
+Currently, Martini is available as an Xcode project. To deploy your agent:
+1. Download the latest release and unzip.
+2. Open the project in Xcode.
+3. Use the **Product > Archive** flow to build and install the binary to your local environment.
 
-### **ExecuteCommand**
-Handles the final interaction with the system. It uses `/bin/zsh` to execute confirmed commands and records the results in the session history. It specifically monitors for "red flag" commands such as:
-* `sudo`
-* `rm`
-* `chmod -R 777`
-* `format`
-* `dd`
-* `> /dev/`
-
-## **Technical Details**
-
-* **Language**: **Swift 5.0**.
-* **Platform**: **macOS 26.2+**.
-* **Architecture**: Built as an Apple **PBXNativeTarget** tool.
-* **Shell**: Utilizes `/bin/zsh` for command execution.
-
-## **Installation & Usage**
-
-To start a **Martini** session, download the newest relese, unzip it and use xcode product tab to archive it where you can download the build file and run it
-
-working on homebrew formula integration (currently problems with the way it builds there)
+*Note: Homebrew formula integration is currently in development to streamline the agent's deployment.*
 
 ## **License**
-Proprietary / Non-Commercial.
+Proprietary / Non-Commercial Private Use [cite: 2].
