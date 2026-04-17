@@ -69,6 +69,7 @@ while true {
     do {
         let response = try await session.respond(to: input, options: options)
         
+        print(response.content)
         // 3. Extract tool calls to save to history
         // In a real-world app, you'd parse the 'transcriptEntries' to find
         // which command was successfully accepted by the user.
