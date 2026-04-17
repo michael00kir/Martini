@@ -78,7 +78,7 @@ while true {
             // is usually handled inside the ExecuteCommandTool's return value.
         }
     } catch {
-        print("\n❌ Error: \(error.localizedDescription)")
+        print("\n❌ System Error: \(error.localizedDescription)")
     }
     session = LanguageModelSession(
         tools: [ManualLookupTool(), ExecuteCommandTool(), ChangeDirectoryTool(),

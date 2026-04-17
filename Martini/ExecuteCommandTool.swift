@@ -62,8 +62,19 @@ struct ExecuteCommandTool: Tool {
         process.arguments = ["-l", "-c", arguments.command]
         
         // No pipe here: let the command output directly to the terminal
-        try? process.run()
-        process.waitUntilExit()
+        // Inside ExecuteCommandTool.swift
+        do {
+            try process.run()
+            process.waitUntilExit()
+            
+            // Check if the command actually succeeded (status 0)
+            if process.terminationStatus != 0 {
+                return "ERROR: Command failed with exit code \(process.terminationStatus)"
+            }
+        } catch {
+            return "ERROR: Failed to launch process: \(error.localizedDescription)"
+        }
+
         
         // Update History
         HistoryManager.shared.add(

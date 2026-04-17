@@ -40,7 +40,7 @@ struct ManualLookupTool: Tool {
                 return "Successfully researched \(arguments.toolName). (Docs hidden from terminal)"
             }
         } catch {
-            return "ERROR: Lookup failed."
+            return "ERROR: Manual lookup failed because: \(error.localizedDescription)"
         }
         
         return "ERROR: No documentation found."
