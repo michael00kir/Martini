@@ -57,7 +57,6 @@ struct ExecuteCommandTool: Tool {
 
         print("\n✨ Running...\n")
         
-        // In ExecuteCommandTool.swift
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/bin/zsh")
         process.arguments = ["-l", "-c", arguments.command]
