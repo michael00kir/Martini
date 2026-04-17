@@ -67,11 +67,6 @@ struct ExecuteCommandTool: Tool {
         process.standardOutput = FileHandle.standardOutput
         process.standardError = FileHandle.standardError
 
-        try? process.run()
-        process.waitUntilExit()
-
-        // No pipe here: let the command output directly to the terminal
-        // Inside ExecuteCommandTool.swift
         do {
             try process.run()
             process.waitUntilExit()
