@@ -57,10 +57,19 @@ struct ExecuteCommandTool: Tool {
 
         print("\n✨ Running...\n")
         
+        // In ExecuteCommandTool.swift
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/bin/zsh")
         process.arguments = ["-l", "-c", arguments.command]
-        
+
+        // Connect the process directly to your current terminal session
+        process.standardInput = FileHandle.standardInput
+        process.standardOutput = FileHandle.standardOutput
+        process.standardError = FileHandle.standardError
+
+        try? process.run()
+        process.waitUntilExit()
+
         // No pipe here: let the command output directly to the terminal
         // Inside ExecuteCommandTool.swift
         do {
