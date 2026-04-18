@@ -32,12 +32,13 @@ Martini follows a cognitive loop to ensure accuracy and sovereignty:
 
 ## **Installation & Deployment**
 
-Currently, Martini is available as an Xcode project. To deploy your agent:
-1. Download the latest release and unzip.
-2. Open the project in Xcode.
-3. Use the **Product > Archive** flow to build and install the binary to your local environment.
+```bash
+brew install martini
+```
 
-*Note: Homebrew formula integration is currently in development to streamline the agent's deployment.*
+```bash
+martini
+```
 
 ## **License**
 Proprietary / Non-Commercial Private Use.
