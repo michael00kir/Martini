@@ -58,8 +58,8 @@ struct ExecuteCommandTool: Tool {
         print("\n✨ Running...\n")
         
         let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/bin/zsh")
-        process.arguments = ["-l", "-c", arguments.command]
+        process.executableURL = URL(fileURLWithPath: "/bin/zsh/env")
+        process.arguments = ["zsh","-l", "-c", arguments.command]
 
         // Connect the process directly to your current terminal session
         process.standardInput = FileHandle.standardInput
@@ -77,15 +77,6 @@ struct ExecuteCommandTool: Tool {
         } catch {
             return "ERROR: Failed to launch process: \(error.localizedDescription)"
         }
-
-        
-        // Update History
-        HistoryManager.shared.add(
-            intent: arguments.reasoning,
-            command: arguments.command,
-            result: "Success"
-        )
-        
         return "Command completed successfully."
     }
 
