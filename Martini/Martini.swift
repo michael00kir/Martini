@@ -1,26 +1,20 @@
-//
 //  main.swift
 //  Martini
 //
 //  Created by Michael Kir on 13/03/2026.
-//
-//
-//  main.swift
-//  Martini
-//
-//  Created by Michael Kir on 13/03/2026.
-//
 
 import Foundation
 import FoundationModels
 import ArgumentParser
+import System
 
-//Structures the response
+// 1. Structure the response for Apple Intelligence
 @Generable(description: "A structured response from the Martini orchestrator.")
 struct MartiniResponse {
     enum TaskStatus: String, Codable {
-            case researching, proposing, executing, finished, error
-        }
+        case researching, proposing, executing, finished, error
+    }
+    
     @Guide(description: "A friendly, concise acknowledgment of the user's request.")
     var message: String
 
@@ -37,13 +31,18 @@ struct MartiniResponse {
 @main
 struct Martini: AsyncParsableCommand {
     static var configuration = CommandConfiguration(
-        abstract: "A professional CLI orchestrator powered by Apple Intelligence.",
-        version: "1.0.0"
+        abstract: "A professional TTY-integrated CLI orchestrator.",
+        version: "1.1.0"
     )
 
     func run() async throws {
-        // 1. Initial Setup & Model Verification
-        print("🍸 Martini Started. Type 'exit' or 'quit' to end.")
+        // --- TTY REFURBISHMENT: SIGNAL HANDLING ---
+        // We ignore SIGINT (Ctrl+C) in the main process so that it can be
+        // forwarded to child processes in ExecuteCommandTool instead of
+        // killing the Martini session.
+        signal(SIGINT, SIG_IGN)
+
+        print("\u{1B}[1;35m🍸 Martini High-Fidelity TTY Mode Active.\u{1B}[0m")
         print("------------------------------------------------------------")
 
         let status = checkModelStatus()
@@ -54,48 +53,53 @@ struct Martini: AsyncParsableCommand {
             throw ExitCode.failure
         }
 
-        // 2. Initial Session Setup (Outside the loop)
+        // 2. Initial Session Setup
         let options = GenerationOptions(sampling: .greedy)
         let toolset: [any Tool] = [
             ManualLookupTool(),
-            ExecuteCommandTool(),
+            ExecuteCommandTool(), // Now uses PTY/forkpty
             FileSystemManager(),
             ShortcutsTool()
         ]
 
         var session = LanguageModelSession(
             tools: toolset,
-            instructions: Martini.generateInstructions(history: "No history so far")
+            instructions: Martini.generateInstructions(history: "Session Started")
         )
 
         // 3. The REPL Loop
         while true {
-            print("\nMartini> ", terminator: "")
-            guard let input = readLine(), !input.isEmpty else { break }
+            // --- TTY REFURBISHMENT: DYNAMIC PROMPT ---
+            // Show the current working directory (CWD) in the prompt.
+            let rawCwd = FileManager.default.currentDirectoryPath
+            let displayPath = rawCwd.replacingOccurrences(of: NSHomeDirectory(), with: "~")
+            
+            print("\n\u{1B}[1;34m\(displayPath)\u{1B}[0m Martini> ", terminator: "")
+            
+            guard let input = readLine(), !input.isEmpty else { continue }
             if ["exit", "quit"].contains(input.lowercased()) { break }
 
             do {
-                // 1. Respond using the current session
+                // 4. Respond using the session
                 let response = try await session.respond(to: input, generating: MartiniResponse.self, options: options)
-                    let data = response.content // This is now an instance of MartiniResponse
+                let data = response.content
 
-                    // Print using the structured data
-                    print("\n💬 \(data.message)")
-                    if !data.plan.isEmpty {
-                        print("📋 Plan:")
-                        data.plan.forEach { print("  • \($0)") }
-                    }
-                    if let suggestion = data.suggestion {
-                        print("\n💡 Tip: Try '\(suggestion)'")
-                    }
+                print("\n💬 \(data.message)")
+                if !data.plan.isEmpty {
+                    print("📋 Plan:")
+                    data.plan.forEach { print("  • \($0)") }
+                }
+                
+                if let suggestion = data.suggestion {
+                    print("\n💡 Tip: Try '\(suggestion)'")
+                }
 
-                // 2. Extract history from the session's actual transcript
-                // This captures EVERY tool call and AI response automatically.
+                // 5. Update History Context
                 let transcriptSummary = session.transcript.map { entry in
                     return "- \(entry.description)"
                 }.joined(separator: "\n")
 
-                // 3. Refresh the session with the new transcript data
+                // Refresh instructions with new history
                 session = LanguageModelSession(
                     tools: toolset,
                     instructions: Martini.generateInstructions(history: transcriptSummary)
@@ -106,38 +110,32 @@ struct Martini: AsyncParsableCommand {
                 print("\n❌ System Error: \(error.localizedDescription)")
             }
         }
-
     }
 
-    // Static helper to keep instructions consistent between refreshes
     static func generateInstructions(history: String) -> String {
         return """
         You are the 'Martini' CLI Orchestrator. 
-            
-            CONTEXT:
-            \(history)
-            
-            OPERATIONAL CONSTRAINTS:
-            1. Use 'FileSystemManager' for directory context before execution.
-            2. Use 'ManualLookup' to verify CLI flags for 'ExecuteCommand'.
-            3. If 'ExecuteCommand' returns 'TASK_CANCELLED', stop immediately.
+        
+        CURRENT CONTEXT:
+        \(history)
+        
+        OPERATIONAL CONSTRAINTS:
+        1. Always check 'FileSystemManager' if the user refers to files you haven't seen.
+        2. Use 'ManualLookup' for unfamiliar commands to ensure syntax is 100% correct.
+        3. If 'ExecuteCommand' returns 'TASK_CANCELLED', the user rejected the plan. Acknowledge and stop.
+        4. You are running in a full TTY; you can propose interactive commands (sudo, vim, etc).
         """
     }
 
     private func checkModelStatus() -> (isReady: Bool, message: String) {
         let model = SystemLanguageModel.default
-        
         switch model.availability {
         case .available:
-            return (true, "✅ Apple Intelligence is available and ready.")
-        case .unavailable(.deviceNotEligible):
-            return (false, "❌ Error: This device is not eligible for Apple Intelligence.")
+            return (true, "✅ Apple Intelligence ready.")
         case .unavailable(.appleIntelligenceNotEnabled):
-            return (false, "⚠️  Apple Intelligence is disabled. Please enable it in System Settings.")
-        case .unavailable(.modelNotReady):
-            return (false, "⏳ The model is currently downloading or preparing.")
-        case .unavailable(_):
-            return (false, "❌ Apple Intelligence is unavailable for an unknown reason.")
+            return (false, "⚠️  Please enable Apple Intelligence in Settings.")
+        default:
+            return (false, "❌ Apple Intelligence is unavailable (\(model.availability)).")
         }
     }
 }
