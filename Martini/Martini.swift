@@ -58,8 +58,7 @@ struct Martini: AsyncParsableCommand {
         let toolset: [any Tool] = [
             ManualLookupTool(),
             ExecuteCommandTool(), // Now uses PTY/forkpty
-            FileSystemManager(),
-            ShortcutsTool()
+            FileSystemManager()
         ]
 
         var session = LanguageModelSession(
