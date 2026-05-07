@@ -63,7 +63,7 @@ struct Martini: AsyncParsableCommand {
 
         var session = LanguageModelSession(
             tools: toolset,
-            instructions: Martini.generateInstructions(history: "Session Started")
+            instructions: "You are a helpful TTY assistant."
         )
 
         // 3. The REPL Loop
@@ -92,16 +92,10 @@ struct Martini: AsyncParsableCommand {
                 if let suggestion = data.suggestion {
                     print("\n💡 Tip: Try '\(suggestion)'")
                 }
-
-                // 5. Update History Context
-                let transcriptSummary = session.transcript.map { entry in
-                    return "- \(entry.description)"
-                }.joined(separator: "\n")
-
                 // Refresh instructions with new history
                 session = LanguageModelSession(
                     tools: toolset,
-                    instructions: Martini.generateInstructions(history: transcriptSummary)
+                    instructions: "You are a helpful TTY assistant."
                 )
                 session.prewarm()
                 
@@ -109,21 +103,6 @@ struct Martini: AsyncParsableCommand {
                 print("\n❌ System Error: \(error.localizedDescription)")
             }
         }
-    }
-
-    static func generateInstructions(history: String) -> String {
-        return """
-        You are the 'Martini' CLI Orchestrator. 
-        
-        CURRENT CONTEXT:
-        \(history)
-        
-        OPERATIONAL CONSTRAINTS:
-        1. Always check 'FileSystemManager' if the user refers to files you haven't seen.
-        2. Use 'ManualLookup' for unfamiliar commands to ensure syntax is 100% correct.
-        3. If 'ExecuteCommand' returns 'TASK_CANCELLED', the user rejected the plan. Acknowledge and stop.
-        4. You are running in a full TTY; you can propose interactive commands (sudo, vim, etc).
-        """
     }
 
     private func checkModelStatus() -> (isReady: Bool, message: String) {
